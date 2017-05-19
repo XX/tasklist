@@ -35,7 +35,9 @@ if (!empty($data['pagination'])):
                 <li <?= $page == $i ? 'class="active"' : '' ?>><a href="?page=<?= $i ?>"><?= $i ?></a></li>
             <?php endfor; ?>
         <?php endif; ?>
-        <li <?= $page == $count ? 'class="active"' : '' ?>><a href="?page=<?= $count ?>"><?= $count ?></a></li>
+        <?php if ($count > 1): ?>
+            <li <?= $page == $count ? 'class="active"' : '' ?>><a href="?page=<?= $count ?>"><?= $count ?></a></li>
+        <?php endif; ?>
         <li <?= $page == $count ? 'class="disabled"' : '' ?>>
             <a href="<?= $page < $count ? '?page=' . ($page + 1) : '' ?>" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
