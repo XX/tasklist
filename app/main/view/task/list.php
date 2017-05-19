@@ -1,13 +1,13 @@
 <div class="row">
-    <table class="table table-hover">
+    <table class="table table-hover" data-toggle="table">
         <thead>
             <tr>
-                <th>id</th>
-                <th>image</th>
-                <th>description</th>
-                <th>user</th>
-                <th>e-mail</th>
-                <th>status</th>
+                <th data-sortable="true">id</th>
+                <th data-sortable="false">image</th>
+                <th data-sortable="false">description</th>
+                <th data-sortable="true">user</th>
+                <th data-sortable="true">e-mail</th>
+                <th data-sortable="true">status</th>
             </tr>
         </thead>
         <tbody>
