@@ -30,9 +30,9 @@ class Task extends AbstractEntity
         $status = RequestHelper::getRawPostValue('status');
         $this->status = $status === 'done' ? $status : 'new';
 
-        $imagePath = FileHelper::uploadAndGetImageFile();
-        if (!empty($imagePath)) {
-            $this->image_uri = Application::$config['uploadUri'] . pathinfo($imagePath, PATHINFO_BASENAME);
+        $imageFileName = FileHelper::uploadAndGetImageFile();
+        if (!empty($imageFileName)) {
+            $this->image_uri = Application::$config['uploadUri'] . $imageFileName;
         }
     }
 }

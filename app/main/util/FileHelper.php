@@ -20,27 +20,29 @@ class FileHelper
 
         if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
             $tmpPath = $_FILES['file']['tmp_name'];
-            $name = $_FILES['file']['name'];
+            $fileName = $_FILES['file']['name'];
 
-            $pathInfo = pathinfo($name);
-            $type = $pathInfo['extension'];
-            $shortName = $pathInfo['filename'];
+            $pathInfo = self::getPathInfo($fileName);
+            $type = $pathInfo['ext'];
+            $shortName = $pathInfo['name'];
 
             $lowerType = strtolower($type);
             if ($lowerType === "jpg" || $lowerType === "jpeg" || $lowerType === "png" || $lowerType === "gif") {
                 static::scaleImage($tmpPath, $imageWidth, $imageHeight);
-                $targetPath = $uploadDir . $name;
+                $targetName = $fileName;
+                $targetPath = $uploadDir . $targetName;
                 $count = 1;
                 while (file_exists($targetPath)) {
                     if (static::compareFiles($tmpPath, $targetPath)) {
-                        return $targetPath;
+                        return $targetName;
                     }
-                    $targetPath = $uploadDir . "$shortName-$count.$type";
+                    $targetName = "$shortName-$count.$type";
+                    $targetPath = $uploadDir . $targetName;
                     $count++;
                 }
 
                 if (move_uploaded_file($tmpPath, $targetPath)) {
-                    return $targetPath;
+                    return $targetName;
                 }
             }
         }
@@ -57,5 +59,37 @@ class FileHelper
         $imagick = new \Imagick(realpath($imagePath));
         $imagick->scaleImage($width, $height, true);
         $imagick->writeImage($imagePath);
+    }
+
+    public static function getPathInfo($path)
+    {
+        $info = [
+            'file' => '',
+            'name' => '',
+            'ext' => ''
+        ];
+
+        $file = $path;
+        $separatorPos = strrpos($path, '/');
+        if ($separatorPos !== false) {
+            $file = substr($path, $separatorPos + 1);
+        }
+
+        if ($file !== false) {
+            $info['file'] = $file;
+
+            $name = $file;
+            $dotPos = strrpos($file, '.');
+            if ($dotPos !== false) {
+                $name = substr($file, 0, $dotPos);
+                $ext = substr($file, $dotPos + 1);
+                if ($ext !== false) {
+                    $info['ext'] = $ext;
+                }
+            }
+            $info['name'] = $name;
+        }
+
+        return $info;
     }
 }
