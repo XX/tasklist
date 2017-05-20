@@ -1,5 +1,5 @@
 <div class="row">
-    <table class="table table-hover" data-toggle="table">
+    <table id="tasklist" class="table table-hover" data-toggle="table">
         <thead>
             <tr>
                 <th data-sortable="true">id</th>
@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             <?php foreach ($data['tasks'] as $task):?>
-            <tr class="clickable-row" data-href="/task/view/<?= $task->id ?>">
+            <tr data-href="/task/view/<?= $task->id ?>">
                 <td><?= $task->id ?></td>
                 <td><img src="<?= $task->image_uri ?>" class="img-thumbnail" /></td>
                 <td><?= $task->description ?></td>
@@ -28,8 +28,8 @@
 
 <script>
     $(function () {
-        $(".clickable-row").click(function() {
-            window.location = $(this).data("href");
+        $('#tasklist').on('click-row.bs.table', function (e, row, $element) {
+            window.location = $element.data("href");
         });
     });
 </script>
